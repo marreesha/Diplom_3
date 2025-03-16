@@ -19,7 +19,7 @@ def driver(request):
 
 @pytest.fixture
 def api_user():
-    client = ApiClient(URLS.BASE_URL[:-1])
+    client = ApiClient(URLS.BASE_URL)
     return ApiUser(client)
 
 
