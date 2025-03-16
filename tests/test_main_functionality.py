@@ -1,6 +1,6 @@
 import allure
 import pytest
-from conftest import driver, user_data, login_user, registration_user
+from conftest import driver, user_data, login_user, create_new_user
 from src import ConstructorPage, URLS
 
 @allure.feature('Основной функционал')
@@ -39,6 +39,7 @@ class TestMainFunctionality:
         assert page.get_current_url() == URLS.ORDERS_FEED_PAGE
 
     @allure.story('Отображение информации об ингредиенте')
+    @allure.title('Отображение информации об ингредиенте: {index}')
     @pytest.mark.parametrize("index", [0, 5, 10])
     def test_get_ingredient_info(self, driver, index):
         page = ConstructorPage(driver)
@@ -48,6 +49,7 @@ class TestMainFunctionality:
         assert ingredient_info.is_displayed() is True
 
     @allure.story('Закрыть отображение информации об ингредиенте')
+    @allure.title('Закрыть отображение информации об ингредиенте: {index}')
     @pytest.mark.parametrize("index", [0, 5, 10])
     def test_close_ingredient_info(self, driver, index):
         page = ConstructorPage(driver)

@@ -9,3 +9,9 @@ class URLS:
     ACCOUNT_PAGE = BASE_URL + 'account'
     ORDER_HISTORY_PAGE = BASE_URL + 'account/order-history'
     ORDERS_FEED_PAGE = BASE_URL + 'feed'
+
+    REGISTRATION_ENDPOINT = "api/auth/register"
+    LOGIN_ENDPOINT = "api/auth/login"
+    USER_ENDPOINT = "api/auth/user"
+    ORDER_ENDPOINT = "api/orders"
+    DELETE_ENDPOINT = "api/auth/user"

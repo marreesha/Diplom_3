@@ -1,6 +1,6 @@
 import allure
 import pytest
-from conftest import driver, user_data, login_user, registration_user
+from conftest import driver, user_data, login_user, create_new_user
 from src import OrderFeedPage, ConstructorPage, URLS
 
 

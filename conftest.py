@@ -1,6 +1,6 @@
 import pytest
 from selenium import webdriver
-from src import PersonalAccountPage, RegistrationPage, generate_login, generate_password
+from src import PersonalAccountPage, generate_login, generate_password, ApiClient, ApiUser, URLS
 
 
 @pytest.fixture(params=["chrome", "firefox"])
@@ -18,21 +18,32 @@ def driver(request):
 
 
 @pytest.fixture
+def api_user():
+    client = ApiClient(URLS.BASE_URL[:-1])
+    return ApiUser(client)
+
+
+@pytest.fixture
 def user_data():
-    return generate_login(), generate_password()
+    return {'email': generate_login(), 'password': generate_password(), 'name': "Тестовый пользователь"}
 
 
 @pytest.fixture
-def registration_user(user_data, driver):
-    page = RegistrationPage(driver)
-    page.get_registration_page()
-    page.enter_registration_field(*user_data)
-    page.click_on_registration()
+def create_new_user(api_user, user_data):
+    data = user_data
+
+    response = api_user.create_user(data=data)
+    token = response.json().get('accessToken', '')
+    yield token
+
+    headers = {'Authorization': token}
+    api_user.delete_user(headers=headers)
 
 
 @pytest.fixture
-def login_user(user_data, driver, registration_user):
+def login_user(user_data, driver, create_new_user):
     page = PersonalAccountPage(driver)
-    page.enter_login_field(*user_data)
+    page.get_login_page()
+    page.enter_login_field(user_data['email'], user_data['password'])
     page.click_on_login()
     return page

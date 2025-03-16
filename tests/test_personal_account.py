@@ -1,6 +1,6 @@
 import allure
 from src import URLS
-from conftest import driver, user_data, login_user, registration_user
+from conftest import driver, user_data, login_user, create_new_user
 
 
 @allure.feature('Личный кабинет')
