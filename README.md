@@ -1,5 +1,6 @@
 # Diplom_3
 
+---
 ### [Восстановление пароля](tests/test_forgot_password.py):
 - [x] переход на страницу восстановления пароля по кнопке «Восстановить пароль»;  
 - [x] ввод почты и клик по кнопке «Восстановить»;  
@@ -27,3 +28,30 @@
 
 ## [Allure](allure_report)
 - [x] Готово
+
+---
+## Установка
+
+1. Установка зависимостей:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Запуск теста:
+
+```bash
+pytest
+```
+
+3. Генерация отчета о тестировании:
+
+```bash
+allure generate allure_results --clean -o allure_report
+```
+
+4. Просмотр отчета:
+
+```bash
+allure open allure_report
+```
