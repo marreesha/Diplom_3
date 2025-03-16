@@ -11,7 +11,7 @@ class TestPersonalAccount:
         page = login_user
         page.click_on_personal_account()
 
-        assert driver.current_url == URLS.PROFILE_PAGE
+        assert page.get_current_url() == URLS.PROFILE_PAGE
 
     @allure.story('Переход в раздел «История заказов»')
     def test_order_history(self, driver, login_user):
@@ -19,7 +19,7 @@ class TestPersonalAccount:
         page.click_on_personal_account()
 
         page.click_on_order_history()
-        assert driver.current_url == URLS.ORDER_HISTORY_PAGE
+        assert page.get_current_url() == URLS.ORDER_HISTORY_PAGE
 
     @allure.story('Выход из аккаунта.')
     def test_logout(self, driver, login_user):
@@ -27,4 +27,4 @@ class TestPersonalAccount:
         page.click_on_personal_account()
 
         page.click_on_logout()
-        assert driver.current_url == URLS.LOGIN_PAGE
+        assert page.get_current_url() == URLS.LOGIN_PAGE

@@ -13,7 +13,7 @@ class TestMainFunctionality:
         page = ConstructorPage(driver)
         page.click_on_constructor()
 
-        assert driver.current_url == URLS.BASE_URL
+        assert page.get_current_url() == URLS.BASE_URL
 
     @allure.story('Переход по клику на «Конструктор» без регистрации')
     def test_click_on_constructor_wo_registration(self, driver):
@@ -21,14 +21,14 @@ class TestMainFunctionality:
         page.get_login_page()
         page.click_on_constructor()
 
-        assert driver.current_url == URLS.BASE_URL
+        assert page.get_current_url() == URLS.BASE_URL
 
     @allure.story('Переход по клику на «Лента заказов»')
     def test_click_on_orders_feed(self, driver, login_user):
         page = ConstructorPage(driver)
         page.click_on_orders_feed()
 
-        assert driver.current_url == URLS.ORDERS_FEED_PAGE
+        assert page.get_current_url() == URLS.ORDERS_FEED_PAGE
 
     @allure.story('Переход по клику на «Лента заказов» без регистрации')
     def test_click_on_orders_feed_wo_registration(self, driver):
@@ -36,7 +36,7 @@ class TestMainFunctionality:
         page.get_login_page()
         page.click_on_orders_feed()
 
-        assert driver.current_url == URLS.ORDERS_FEED_PAGE
+        assert page.get_current_url() == URLS.ORDERS_FEED_PAGE
 
     @allure.story('Отображение информации об ингредиенте')
     @pytest.mark.parametrize("index", [0, 5, 10])

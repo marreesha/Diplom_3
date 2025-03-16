@@ -69,3 +69,30 @@ class BasePage:
     def click_on_with_execute_script(self, locator):
         _element = self.find_element(locator)
         self.driver.execute_script("arguments[0].click();", _element)
+
+    def drag_ingredient_to_order(self, source, target):
+        # Используем JavaScript для выполнения перетаскивания (на firefox вообще ничего не работает)
+        js_drag_and_drop = """
+                    const ingredient = arguments[0];
+                    const orderSection = arguments[1];
+
+                    // Создаем события для перетаскивания
+                    const dragStartEvent = new DragEvent('dragstart', { bubbles: true });
+                    const dragOverEvent = new DragEvent('dragover', { bubbles: true });
+                    const dropEvent = new DragEvent('drop', { bubbles: true });
+
+                    // Инициируем начало перетаскивания
+                    ingredient.dispatchEvent(dragStartEvent);
+
+                    // Перетаскиваем в область заказа
+                    orderSection.dispatchEvent(dragOverEvent);
+                    orderSection.dispatchEvent(dropEvent);
+                """
+        self.driver.execute_script(js_drag_and_drop, source, target)
+
+    def get_current_url(self):
+        return self.driver.current_url
+
+    def wait_for_close_element(self, locator):
+        self.wait.until_not(EC.visibility_of_element_located(locator))
+

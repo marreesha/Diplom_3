@@ -1,5 +1,4 @@
 import allure
-import time
 from .base_page import BasePage
 from selenium.webdriver.common.by import By
 from src.helpers.urls import URLS
@@ -15,6 +14,8 @@ class OrderFeedPage(BasePage):
 
     IN_PROGRES = (By.XPATH, '//*[contains(@class,"OrderFeed_orderListReady_")]')
     ORDER_NUMBERS_LIST = (By.XPATH, ".//p[@class='text text_type_digits-default']")
+    ORDER_STATUS = (By.XPATH,
+                    ".//ul[contains(@class, 'OrderFeed_orderListReady__1YFem')]/li[@class= 'text text_type_digits-default mb-2']")
 
     @allure.step("Переход на главную страницу")
     def get_base_page(self):
@@ -52,9 +53,8 @@ class OrderFeedPage(BasePage):
 
     @allure.step("Получить заказы «В работе»")
     def get_in_progres(self):
-        self.wait_for_element_to_be_visible(self.IN_PROGRES)
-        time.sleep(1)
-        return self.find_elements(self.IN_PROGRES)
+        self.wait_for_element_to_be_visible(self.ORDER_STATUS)
+        return self.find_element(self.IN_PROGRES)
 
     def get_set_elements_text(self, elements):
         set_elements = set()
@@ -65,5 +65,4 @@ class OrderFeedPage(BasePage):
     @allure.step("Получить номера заказов «Лента заказов»")
     def get_all_orders(self):
         self.wait_for_element_to_be_visible(self.ORDER_NUMBERS_LIST)
-        time.sleep(1)
         return self.find_elements(self.ORDER_NUMBERS_LIST)

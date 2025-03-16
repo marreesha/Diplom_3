@@ -53,5 +53,4 @@ class PersonalAccountPage(BasePage):
     def get_order_number(self):
         number_elem = self.wait_for_element_to_be_visible(self.ORDER_NUMBER)
         order_num_str = number_elem.text.strip()
-        print(order_num_str)
         return order_num_str

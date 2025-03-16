@@ -12,10 +12,9 @@ def driver(request):
         options = webdriver.FirefoxOptions()
         driver = webdriver.Firefox(options=options)
 
-    try:
-        yield driver
-    finally:
-        driver.quit()
+    yield driver
+
+    driver.quit()
 
 
 @pytest.fixture

@@ -12,7 +12,7 @@ class TestForgotPassword:
         page.get_login_page()
         page.click_on_forgot_password_link()
 
-        assert driver.current_url == URLS.FORGOT_PASSWORD_PAGE
+        assert page.get_current_url() == URLS.FORGOT_PASSWORD_PAGE
 
     @allure.story('Ввод почты и клик по кнопке «Восстановить»')
     def test_enter_email_and_click_recover(self, driver, user_data):
@@ -22,7 +22,7 @@ class TestForgotPassword:
         page.enter_email(user_data[0])
         page.click_on_recover_button()
 
-        assert driver.current_url == URLS.RESET_PASSWORD_PAGE
+        assert page.get_current_url() == URLS.RESET_PASSWORD_PAGE
 
     @allure.story('Клик по кнопке показать/скрыть пароль - делает поле активным')
     def test_show_hide_password(self, driver, user_data):

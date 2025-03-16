@@ -66,13 +66,13 @@ class TestOrderFeed:
         order_feed_page = OrderFeedPage(driver)
         order_feed_page.get_feed_page()
         # Получить все заказы в работе
-        set_orders = order_feed_page.get_set_elements_text(order_feed_page.get_in_progres())
+        orders_in_progress = order_feed_page.get_in_progres().text
 
         with allure.step('Данные теста'):
             allure.attach(str(order_number), name='order_number')
-            allure.attach(str(set_orders), name='set_orders')
+            allure.attach(str(orders_in_progress), name='set_orders')
 
-        assert order_number in set_orders
+        assert order_number == orders_in_progress
 
     @allure.story('Заказ пользователя виден в «Лента заказов»')
     def test_user_order_in_feed_page(self, driver, login_user):

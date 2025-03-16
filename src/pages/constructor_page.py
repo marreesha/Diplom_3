@@ -1,5 +1,4 @@
 import allure
-import time
 from .base_page import BasePage
 from selenium.webdriver.common.by import By
 from src.helpers.urls import URLS
@@ -20,6 +19,7 @@ class ConstructorPage(BasePage):
     CLOSE_ORDER_CONFIRMATION = (By.XPATH, '//button[contains(@class, "Modal_modal__close")]')
 
     ORDER_NUMBER = (By.XPATH, '//h2[contains(@class,"Modal_modal__title_shadow__")]')
+    ICON_WAITING = (By.XPATH, ".//div[contains(@class, 'Modal_modal_opened')]")
 
     @allure.step("Переход на главную страницу")
     def get_base_page(self):
@@ -65,27 +65,6 @@ class ConstructorPage(BasePage):
         order_block = self.find_element(self.ORDER_BLOCK)
         self.drag_ingredient_to_order(ingredient, order_block)
 
-    @allure.step("Перетаскивание ингредиента в поле заказа")
-    def drag_ingredient_to_order(self, source, target):
-        # Используем JavaScript для выполнения перетаскивания (на firefox вообще ничего не работает)
-        js_drag_and_drop = """
-                    const ingredient = arguments[0];
-                    const orderSection = arguments[1];
-
-                    // Создаем события для перетаскивания
-                    const dragStartEvent = new DragEvent('dragstart', { bubbles: true });
-                    const dragOverEvent = new DragEvent('dragover', { bubbles: true });
-                    const dropEvent = new DragEvent('drop', { bubbles: true });
-
-                    // Инициируем начало перетаскивания
-                    ingredient.dispatchEvent(dragStartEvent);
-
-                    // Перетаскиваем в область заказа
-                    orderSection.dispatchEvent(dragOverEvent);
-                    orderSection.dispatchEvent(dropEvent);
-                """
-        self.driver.execute_script(js_drag_and_drop, source, target)
-
     @allure.step("Получить каунтер ингредиента")
     def get_counter_value(self, index):
         counter_elements = self.find_elements(self.COUNTER_INGREDIENT)
@@ -94,7 +73,7 @@ class ConstructorPage(BasePage):
     @allure.step("Подтвердить заказ")
     def submit_order(self):
         self.click_on_with_execute_script(self.SUBMIT_ORDER_BUTTON)
-        time.sleep(3)
+        #
         return self.wait_for_element_to_be_visible(self.ORDER_CONFIRMATION)
 
     @allure.step("Закрыть поле подтверждения заказа")
@@ -105,10 +84,12 @@ class ConstructorPage(BasePage):
     @allure.step("Оформление заказа")
     def complete_order(self):
         self.get_base_page()
-        time.sleep(1)
+        self.wait_for_element_to_be_clickable(self.AVAILABLE_INGREDIENTS)
         self.add_bun_to_order()
         self.add_ingredient_to_order()
         self.submit_order()
+        self.timeout = 40
+        self.wait_for_close_element(self.ICON_WAITING)
         number = self.find_element(self.ORDER_NUMBER).text
         self.close_order_confirmation()
         return number
